@@ -1,6 +1,6 @@
 {
   description = "Isolated workspaces are implemented through a NixOS container";
-  outputs = { self, nixpkgs, home-manager }: {
+  outputs = { self }: {
     nixosModules.workspaces = import ./container-workspace.nix;
   };
 }
