@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager }: {
-    nixosModules.workspaces = { config }: import ./container-workspace.nix { config = config;
+    nixosModules.workspaces = { config, nix-doom-emacs }: import ./container-workspace.nix { config = config;
                                                                              lib = nixpkgs.lib;
                                                                              pkgs = nixpkgs;
                                                                              home-manager = home-manager;
