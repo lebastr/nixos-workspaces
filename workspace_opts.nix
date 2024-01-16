@@ -25,11 +25,6 @@ with types;
       default = false;
     };
     
-    forwardNixSrc = mkOption {
-      type = bool;
-      default = false;
-    };
-
     # TODO What exact type is here?
     systemPackages = mkOption {
       type = listOf attrs;

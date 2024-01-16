@@ -49,12 +49,6 @@ lib.mkIf (workspace_config != null)
           isReadOnly = true;
         };
       } else { };
-      nixsrc = if nix-src != null && workspace_config.forwardNixSrc then {
-        nixsrc = { hostPath = toString nix-src;
-                   isReadOnly = true;
-                   mountPoint = "/home/user/nixsrc";
-                 };
-      } else { };
       fuseDevice = if workspace_config.forwardFuseDevice then {
         fuseDevice = { hostPath = "/dev/fuse";
                        isReadOnly = false;
@@ -62,7 +56,7 @@ lib.mkIf (workspace_config != null)
                      };
       } else { };
     in
-      workspace_dir // wayland // pulse_audio // dri // nixsrc // fuseDevice;
+      workspace_dir // wayland // pulse_audio // dri // fuseDevice;
     
     allowedDevices = lib.optional workspace_config.forwardHostDri { node = "/dev/dri/renderD128"; modifier = "rw"; } ++
                      lib.optional workspace_config.forwardFuseDevice { node = "/dev/fuse"; modifier = "rw"; };
