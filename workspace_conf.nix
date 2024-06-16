@@ -11,6 +11,7 @@
 with rec {
   inherit (host_config.container-workspace) username workspace-dir nix-src;
   host_userUid = host_config.users.users.${username}.uid;
+  host_runtime = "/host-runtime";
 };
 
 lib.mkIf (workspace_config != null)
@@ -27,7 +28,7 @@ lib.mkIf (workspace_config != null)
         {
           waylandDisplay = {
             hostPath = "/run/user/${toString host_userUid}/wayland-1";
-            mountPoint = "/run/user/${toString host_userUid}/wayland-1";
+            mountPoint = "${host_runtime}/wayland-1";
           };
 
           xDisplay = {
@@ -39,7 +40,7 @@ lib.mkIf (workspace_config != null)
         {
           pulseaudio = {
             hostPath = "/run/user/${toString host_userUid}/pulse";
-            mountPoint = "/run/user/${toString host_userUid}/pulse";
+            mountPoint = "${host_runtime}/pulse";
           };
         } else { };
       dri = if workspace_config.forwardHostDri then {
@@ -103,7 +104,7 @@ lib.mkIf (workspace_config != null)
                 _JAVA_OPTIONS                       = "-Dawt.useSystemAAFontSettings=lcd";
                 DISPLAY                             = ":0";
               } else { }) // {
-                XDG_RUNTIME_DIR                     = "/run/user/${toString host_userUid}/";
+                XDG_RUNTIME_DIR                     = host_runtime;
                 NIX_PATH = lib.mkForce "nixpkgs=${pkgs.path}";
               };
 
