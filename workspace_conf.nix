@@ -135,8 +135,8 @@ lib.mkIf (workspace_config != null)
                   #!${pkgs.stdenv.shell}
                   set -euo pipefail
 
-                  chown user:users /run/user/${toString host_userUid}
-                  chmod 700 /run/user/${toString host_userUid}
+                  chown user:users ${host_runtime}
+                  chmod 700 ${host_runtime}
                 '';
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
