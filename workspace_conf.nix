@@ -66,8 +66,8 @@ lib.mkIf (workspace_config != null)
       system.stateVersion = host_config.system.stateVersion;
       imports = [ home-manager.nixosModules.home-manager ];
       
-      sound.enable = true;
-      hardware.pulseaudio.enable = true;
+      # sound.enable = true;
+      # hardware.pulseaudio.enable = true;
       hardware.opengl = {
         enable = true;
         extraPackages = host_config.hardware.opengl.extraPackages;
