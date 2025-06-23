@@ -84,6 +84,7 @@ lib.mkIf (workspace_config != null)
       
       home-manager = {
         useGlobalPkgs = true;
+        backupFileExtension = "backup";
         users.user = {
           # (4)
           programs.direnv.enable = workspace_config.nix-direnv;
