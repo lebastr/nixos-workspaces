@@ -70,7 +70,7 @@ lib.mkIf (workspace_config != null)
       # hardware.pulseaudio.enable = true;
       hardware.graphics = {
         enable = true;
-        extraPackages = host_config.hardware.opengl.extraPackages;
+        extraPackages = host_config.hardware.graphics.extraPackages;
       };
       
       environment.systemPackages = workspace_config.systemPackages;
