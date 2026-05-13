@@ -10,6 +10,11 @@ with types;
       default = false;
     };
 
+    forwardHostX = mkOption {
+      type = bool;
+      default = false;
+    };
+
     forwardFuseDevice = mkOption {
       type = bool;
       default = false;

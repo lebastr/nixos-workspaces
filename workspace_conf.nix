@@ -30,7 +30,9 @@ lib.mkIf (workspace_config != null)
             hostPath = "/run/user/${toString host_userUid}/wayland-1";
             mountPoint = "${host_runtime}/wayland-1";
           };
-
+        } else { };
+      xorg = if workspace_config.forwardHostX then
+        {
           xDisplay = {
             hostPath = "/tmp/.X11-unix";
             mountPoint = "/tmp/.X11-unix";
@@ -57,7 +59,7 @@ lib.mkIf (workspace_config != null)
                      };
       } else { };
     in
-      workspace_dir // wayland // pulse_audio // dri // fuseDevice;
+      workspace_dir // wayland // xorg // pulse_audio // dri // fuseDevice;
     
     allowedDevices = lib.optional workspace_config.forwardHostDri { node = "/dev/dri/renderD128"; modifier = "rw"; } ++
                      lib.optional workspace_config.forwardFuseDevice { node = "/dev/fuse"; modifier = "rw"; };
