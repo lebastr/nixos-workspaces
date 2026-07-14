@@ -98,6 +98,7 @@ lib.mkIf (workspace_config != null)
             (if workspace_config.forwardHostWayland then
               {
                 WAYLAND_DISPLAY                     = "wayland-1";
+                XDG_SESSION_TYPE                    = "wayland";
                 QT_QPA_PLATFORM                     = "wayland";
                 QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
                 SDL_VIDEODRIVER                     = "wayland";
