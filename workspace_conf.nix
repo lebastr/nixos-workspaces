@@ -58,8 +58,21 @@ lib.mkIf (workspace_config != null)
                        mountPoint = "/dev/fuse";
                      };
       } else { };
+      # Bind the *directory* holding the proxied portal socket, not the socket
+      # file itself: the proxy recreates the socket (new inode) on restart, and a
+      # directory mount lets the container see the fresh socket without a restart.
+      # Read-only is fine; connecting to an AF_UNIX socket is not blocked by a
+      # read-only mount.
+      screencast = if workspace_config.forwardHostScreencast then
+        {
+          portalProxy = {
+            hostPath = "/run/user/${toString host_userUid}/portal-proxy";
+            mountPoint = "${host_runtime}/portal";
+            isReadOnly = true;
+          };
+        } else { };
     in
-      workspace_dir // wayland // xorg // pulse_audio // dri // fuseDevice;
+      workspace_dir // wayland // xorg // pulse_audio // dri // fuseDevice // screencast;
     
     allowedDevices = lib.optional workspace_config.forwardHostDri { node = "/dev/dri/renderD128"; modifier = "rw"; } ++
                      lib.optional workspace_config.forwardFuseDevice { node = "/dev/fuse"; modifier = "rw"; };
@@ -107,6 +120,10 @@ lib.mkIf (workspace_config != null)
                 _JAVA_AWT_WM_NONREPARENTING         = "1";
                 _JAVA_OPTIONS                       = "-Dawt.useSystemAAFontSettings=lcd";
                 DISPLAY                             = ":0";
+              } else { }) //
+            (if workspace_config.forwardHostScreencast then
+              {
+                DBUS_SESSION_BUS_ADDRESS            = "unix:path=${host_runtime}/portal/bus";
               } else { }) // {
                 XDG_RUNTIME_DIR                     = host_runtime;
                 NIX_PATH = lib.mkForce "nixpkgs=${pkgs.path}";

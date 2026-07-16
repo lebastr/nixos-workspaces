@@ -29,7 +29,16 @@ with types;
       type = bool;
       default = false;
     };
-    
+
+    # Forward the host desktop portal (org.freedesktop.portal.Desktop) into the
+    # container via a filtered xdg-dbus-proxy, enabling e.g. screen sharing in
+    # browsers. Requires the host to run a compositor providing the portal
+    # (niri) in the workspace user's session.
+    forwardHostScreencast = mkOption {
+      type = bool;
+      default = false;
+    };
+
     # TODO What exact type is here?
     systemPackages = mkOption {
       type = listOf attrs;
